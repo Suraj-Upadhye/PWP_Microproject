@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Weather App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="{{ url_for('static', filename='styles/styles.css')}}" rel="stylesheet" />
+</head>
+
+<body>
+  <h1>Weather Dashboard</h1>
+  <form action="/weather">
+    <div class="container">
+      <div class="weather-input">
+        <h3>Enter a City Name</h3>
+        <input class="city-input" name="city" id="city" type="text" placeholder="E.g., New York, London, Tokyo">
+        <button class="search-btn" type="submit">Search</button>
+  </form>
+  <div class="separator">
+  </div>
+  <form action="/weather" method="post"> 
+    <button class="location-btn" type="submit">Use Current Location</button>
+  </form>
+  </div>
+  {# We will render the weather data here #}
+  {% if cityname %}
+  <div class="weather-data">
+    <div class="current-weather">
+      <div class="details">
+        <h2>{{cityname}} ({{localdate}})</h2>
+        <h6>Temperature: {{temperature}}°C</h6>
+        <h6>Wind: {{wind_speed}} M/S</h6>
+        <h6>Humidity: {{humidity}}%</h6>
+      </div>
+      <div class="icon">
+        <img src="https://openweathermap.org/img/wn/{{icon}}" alt="weather-icon">
+        <h6>{{description}}</h6>
+      </div>
+    </div>
+    <div class="days-forecast">
+      <h2>6-Day Forecast</h2>
+
+      <ul class="weather-cards">
+        {# Loop through the forecast list #}
+        {% for day in range(forecast_list | length) %}
+        <li class="card">
+          <h3>{{ forecast_list[day]['date'] }}</h3>
+          <img src="https://openweathermap.org/img/wn/{{ forecast_list[day]['icon'] }}" alt="weather-icon">
+          <h6>Temp: {{ forecast_list[day]['temp'] }}°C</h6>
+          <h6>Wind: {{ forecast_list[day]['wind'] }} M/S</h6>
+          <h6>Humidity: {{ forecast_list[day]['humidity'] }}%</h6>
+        </li>
+        {% endfor %}
+      </ul>
+
+
+    </div>
+  </div>
+  {# If there is no city name, we display a message saying to enter one #}
+  {% else %}
+  <!-- <h2 id="no-city-message">Please Enter City Name Above!</h2> -->
+  {% endif %}
+
+  <!-- 1 Kelvin = -273.15 Celsius i.e 273.15 Kelvin = 0 Celsius -->
+
+</body>
+
+</html>
+
